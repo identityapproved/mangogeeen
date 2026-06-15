@@ -99,6 +99,36 @@ def run_tags(monitor):
             last = out
 
 
+def run_tag(index, monitor):
+    """Emit one tag's styled glyph (for a single clickable Ironbar button)."""
+    last = None
+    for msg in stream("all-tags"):
+        mons = msg.get("all_tags", [])
+        chosen = None
+        if monitor:
+            chosen = next((m for m in mons if m.get("monitor") == monitor), None)
+        if chosen is None and mons:
+            chosen = mons[0]
+        if chosen is None:
+            continue
+        t = next((x for x in chosen.get("tags", []) if x.get("index") == index), None)
+        if t is None:
+            continue
+        if t.get("is_urgent"):
+            color = COLOR_URGENT
+        elif t.get("is_active"):
+            color = COLOR_ACTIVE
+        elif t.get("client_count", 0) > 0:
+            color = COLOR_OCCUPIED
+        else:
+            color = COLOR_EMPTY
+        weight = "bold" if t.get("is_active") else "normal"
+        out = f'<span foreground="{color}" weight="{weight}">{index}</span>'
+        if out != last:
+            emit(out)
+            last = out
+
+
 def run_title(max_len):
     last = None
     for msg in stream("focusing-client"):
@@ -125,8 +155,13 @@ def main():
     p = argparse.ArgumentParser(description="mango mmsg -> Ironbar feed")
     sub = p.add_subparsers(dest="mode", required=True)
 
-    pt = sub.add_parser("tags", help="tag indicators (Pango markup)")
+    pt = sub.add_parser("tags", help="all tag indicators (Pango markup)")
     pt.add_argument("--monitor", default=None,
+                    help="monitor name (default: first reported)")
+
+    pg = sub.add_parser("tag", help="one tag's indicator (for a single button)")
+    pg.add_argument("index", type=int, help="tag index (1-based)")
+    pg.add_argument("--monitor", default=None,
                     help="monitor name (default: first reported)")
 
     pw = sub.add_parser("title", help="focused window title")
@@ -139,6 +174,8 @@ def main():
     try:
         if args.mode == "tags":
             run_tags(args.monitor)
+        elif args.mode == "tag":
+            run_tag(args.index, args.monitor)
         elif args.mode == "title":
             run_title(args.max_len)
         elif args.mode == "layout":

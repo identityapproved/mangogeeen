@@ -1,0 +1,30 @@
+#!/usr/bin/env bash
+# Audio visualizer feed for an Ironbar `script` module in watch mode.
+# Runs cava in raw/ascii mode and maps levels 0-7 to block glyphs, one line/frame.
+set -euo pipefail
+
+bars=10
+cfg="$(mktemp)"
+trap 'rm -f "$cfg"' EXIT
+
+cat > "$cfg" <<EOF
+[general]
+framerate = 30
+bars = $bars
+[output]
+method = raw
+raw_target = /dev/stdout
+data_format = ascii
+ascii_max_range = 7
+EOF
+
+glyphs=(" " "▁" "▂" "▃" "▄" "▅" "▆" "▇")
+
+cava -p "$cfg" | while IFS=';' read -ra vals; do
+    out=""
+    for v in "${vals[@]}"; do
+        [ -z "$v" ] && continue
+        out+="${glyphs[$v]}"
+    done
+    printf '%s\n' "$out"
+done
