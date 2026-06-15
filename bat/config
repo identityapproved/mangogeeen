@@ -1,0 +1,5 @@
+# bat config — Tokyo Night (Night)
+# Theme files live in ./themes; rebuild the cache after changes: bat cache --build
+--theme="tokyonight_night"
+--style="numbers,changes,header"
+--italic-text=always

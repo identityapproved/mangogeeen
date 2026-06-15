@@ -62,5 +62,8 @@ function vff() {
 # Flatpak: include exported desktop/icon data for installed flatpaks
 export XDG_DATA_DIRS="$HOME/.local/share/flatpak/exports/share:/var/lib/flatpak/exports/share:${XDG_DATA_DIRS:-/usr/local/share:/usr/share}"
 
+# Starship prompt (Tokyo Night preset)
+eval "$(starship init zsh)"
+
 # zoxide must stay at the very end of this file
 eval "$(zoxide init --cmd cd zsh)"
