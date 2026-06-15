@@ -8,20 +8,20 @@
 
 $white: #c0caf5;
 $lightgray: #c0caf5;
-$gray: #797C7D;
+$gray: #565f89;
 $medgray: #414868;
 $darkgray: #545c7e;
 $black: #1a1b26;
 
 $color1: #ff9e64;
-$color2: #ffc777;
+$color2: #e0af68;
 $color3: #ff9e64;
 $color4: #ff9e64;
 $color5: #9d7cd8;
 $color6: #c0caf5;
 $color7: #7aa2f7;
-$color8: #c3e88d;
-$color9: #c3e88d;
+$color8: #9ece6a;
+$color9: #9ece6a;
 $color10:#41a6b5;
 $color11: #bb9af7;
 $color12: #bb9af7;
@@ -33,7 +33,7 @@ $color17: #7aa2f7;
 $color18: #b4f9f8;
 $color19: #7dcfff;
 $color20: #3b4261;
-$color21: #1f2335;
+$color21: #16161e;
 $color22: rgba(13, 14, 25, 0.5);
 $color23: rgba(26,27,38,0.8);
 $color24: rgba(36, 40, 59, 0.5);
@@ -44,7 +44,7 @@ $color26: rgba(26, 27, 38, 0.2);
 	background-color: $color23;
 	border-radius: 14px;
 	margin: 0px 8px 8px 0px;
-	box-shadow: 1px 1px 3px 1px #151515;
+	box-shadow: 1px 1px 3px 1px #16161e;
 }
 button {
 	color: $color10;
@@ -465,7 +465,7 @@ calendar.highlight {
 	padding-left: 10px;
 }
 .metric scale trough highlight {
-	background: linear-gradient(90deg, #69a0c4 0%, #4e68be  50%, #684fad 100%);
+	background: linear-gradient(90deg, #7aa2f7 0%, #3d59a1  50%, #9d7cd8 100%);
 	border-radius: 6px;
 }
 .metric scale trough {

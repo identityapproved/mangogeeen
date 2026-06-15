@@ -1,7 +1,7 @@
 terminal_title_flag = ""
 locale = ""
 close_when_open = false
-theme = "default"
+theme = "tokyonight"
 monitor = ""
 hotreload_theme = false
 as_window = false
