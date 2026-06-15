@@ -1,0 +1,88 @@
+// Ironbar (bottom bar) for mango. Tags + window title live on the Waybar top bar
+// (native ext/workspaces); this bar carries media, system info, keyboard layout,
+// and a power button. Keyboard layout is fed by scripts/mango-ipc.py (Ironbar has
+// no native mango/dwl module). Mostly native Ironbar modules to minimise script deps.
+let {
+    $music = {
+        type = "music"
+        player_type = "mpd"
+        format = "{title} - {artist}"
+        truncate.mode = "end"
+        truncate.max_length = 35
+        icons.play = " "
+        icons.pause = " "
+        icons.prev = ""
+        icons.next = ""
+    }
+
+    $volume = {
+        type = "volume"
+        format = "{icon} {percentage}%"
+        max_volume = 100
+        icons.volume_high = " "
+        icons.volume_medium = ""
+        icons.volume_low = ""
+        icons.muted = "󰝟 "
+        on_scroll_up = "wpctl set-volume @DEFAULT_AUDIO_SINK@ 2%+"
+        on_scroll_down = "wpctl set-volume @DEFAULT_AUDIO_SINK@ 2%-"
+    }
+
+    $cpu = {
+        type = "sys_info"
+        interval.cpu = 2
+        format = [ " {cpu_percent}%" ]
+    }
+    $mem = {
+        type = "sys_info"
+        interval.memory = 5
+        format = [ " {memory_percent}%" ]
+        tooltip = "{{~/.config/ironbar/scripts/mem_tooltip.py --tooltip}}"
+    }
+    $disk = {
+        type = "sys_info"
+        interval.disks = 60
+        format = [ "󰋊 {disk_percent@/}%" ]
+        tooltip = "{{~/.config/ironbar/scripts/disk_usage.sh}}"
+    }
+
+    // keyboard layout via the mango IPC watcher (watch mode = continuous stdout)
+    $keyboard = {
+        type = "script"
+        mode = "watch"
+        name = "keyboard"
+        cmd = "~/.config/scripts/mango-ipc.py layout"
+    }
+
+    $clock = {
+        type = "clock"
+        format = "%a %b %d  %H:%M"
+    }
+
+    // power button (needs gui-apps/wlogout; harmless if absent)
+    $wlogout = {
+        type = "custom"
+        bar = [
+            {
+                type = "button"
+                name = "wlogout"
+                class = "wlogout"
+                label = ""
+                on_click = "!wlogout"
+            }
+        ]
+    }
+
+    // tray lives on the Waybar top bar (single StatusNotifier host)
+
+    $start = [ $music ]
+    $center = [ $clock ]
+    $end = [ $cpu $mem $disk $keyboard $volume $wlogout ]
+}
+
+in {
+    position = "bottom"
+    icon_theme = "Tela-circle-nord"
+    start = $start
+    center = $center
+    end = $end
+}

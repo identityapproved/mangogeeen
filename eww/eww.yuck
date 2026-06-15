@@ -1,0 +1,190 @@
+;; CAL VARS
+(defpoll calendar_day :interval "10h" "date '+%d'")
+(defpoll calendar_year :interval "10h" "date '+%Y'")
+(defpoll today :interval "12h" "date '+%a, %d %B'")
+(defpoll time :interval "5s" "date '+%H:%M'")
+
+;; ENV / SYSTEM VARS (mango; no Arch/lm_sensors deps)
+(defpoll wm :interval "12h" "echo mango")
+(defpoll shell :interval "1h" "echo $SHELL | awk -F'/' '{print $NF}'")
+(defpoll uptime :interval "1m" "uptime -p | sed 's/^up //'")
+
+(defpoll memory :interval "15s" "$HOME/.config/scripts/eww-stats.sh mem")
+(defpoll cpu :interval "5s" "$HOME/.config/scripts/eww-stats.sh cpu")
+(defpoll disk :interval "30s" "$HOME/.config/scripts/eww-stats.sh disk")
+
+(defpoll IP_ADDR :interval "24h" "ip -br address | awk '$2==\"UP\"{print $3; exit}'")
+
+;; focused window title, streamed from mango IPC (same watcher the bars use)
+(deflisten window :initial "..." "$HOME/.config/scripts/mango-ipc.py title --max 24")
+
+;; Widgets
+
+(defwidget dash []
+    (box :class "dash" :orientation "h")
+)
+
+(defwidget cal[]
+    (box :class "cal-container" :orientation "v" :space-evenly "false" :halign "center"
+        (box  :class "cal-box" :orientation "v" :space-evenly "false"
+            (label :class "clock" :text time)
+            (label :class "date" :text today)
+        )
+        (box :class "cal-window" :orientation "h"
+            (calendar :class "day-names" :day calendar_day :orientation "v"
+                      :class "month-year" :year calendar_year)
+        )
+    )
+)
+
+(defwidget info []
+    (box :class "info-box-outer" :orientation "h" :space-evenly false :halign "center"
+        (box :class "info-box-top" :orientation "v" :space-evenly false
+            (box :class "info-box-inner" :orientation "h" :space-evenly false
+                (box :class "info-box-left" :orientation "v" :space-evenly false
+                    (label :class "info-icon" :text " :")
+                    (label :class "info-icon" :text " :")
+                    (label :class "info-icon" :text " :")
+                )
+                (box :class "info-box-right" :orientation "v" :space-evenly false
+                    (label :class "info-text" :halign "start" :text "${wm}")
+                    (label :class "info-text" :halign "start" :text "${shell}")
+                    (label :class "info-text" :halign "start" :text "${uptime}")
+                )
+            )
+        )
+    )
+)
+
+(defwidget window-title []
+    (box
+        (label :class "window-title"
+        :halign "center"
+        :limit-width 16
+        :justify "center"
+        :text "${window}")
+    )
+)
+
+(defwidget network []
+    (box :class "network-label" :orientation "h" :space-evenly "false" :spacing 10 :halign "center"
+        (label :text "${IP_ADDR}")
+    )
+)
+
+(defwidget system []
+    (box :class "sys_win" :orientation "h" :space-evenly "true" :hexpand "false" :vexpand "false"
+        (box :class "sys_cpu_box" :orientation "v" :space-evenly "false" :hexpand "false" :vexpand "false"
+            (circular-progress
+                    :value cpu
+                    :class "sys_cpu"
+                    :thickness 8
+                (label :text ""
+                    :class "sys_icon_cpu"
+                    :limit-width 4
+                    :show_truncated false
+                    :wrap false))
+            (label :class "cpu_perc" :halign "center" :text "${cpu}%")
+        )
+        (box :class "sys_mem_box" :orientation "v" :space-evenly "false" :hexpand "false" :vexpand "false"
+            (circular-progress
+                    :value memory
+                    :class "sys_mem"
+                    :thickness 8
+              (label :text ""
+                    :class "sys_icon_mem"
+                    :limit-width 4
+                    :show_truncated false
+                    :wrap false
+                    :angle 0.0))
+            (label :class "mem_perc" :halign "center" :text "${memory}%")
+        )
+    )
+)
+
+(defwidget disktemp []
+    (box :class "disk_temp" :orientation "h" :space-evenly "true" :hexpand "false" :vexpand "false"
+        (box :class "sys_disk_box" :orientation "v" :space-evenly "false" :hexpand "false" :vexpand "false"
+          (circular-progress
+                  :value disk
+                  :class "sys_disk"
+                  :thickness 8
+              (label :text ""
+                    :class "sys_icon_disk"
+                    :limit-width 4
+                    :show_truncated false
+                    :wrap false))
+            (label :class "disk_perc" :halign "center" :text "${disk}%")
+        )
+    )
+)
+
+(defwidget apps []
+    (box :class "app-container" :orientation "v" :space-evenly "true" :hexpand "false" :vexpand "false" :halign "center"
+    (label :text "Apps" :class "app-label")
+        (box :class "app-box" :orientation "h" :space-evenly "false" :hexpand "false" :vexpand "false" :spacing 10
+            (button :class "app-firefox"
+                :onclick "kitty 2> /dev/null" "")
+            (button :class "app-files"
+                :onclick "kitty -e yazi 2> /dev/null" "")
+            (button :class "app-code"
+                :onclick "walker 2> /dev/null" "")
+        )
+    )
+)
+
+;; Functions
+(defwidget functions []
+    (box :class "function-container" :orientation "v" :space-evenly "true" :hexpand "false" :vexpand "false" :halign "center"
+    (label :text "Functions" :class "function-label")
+        (box :class "function-box" :orientation "h" :space-evenly "false" :hexpand "false" :vexpand "false" :spacing 10
+            (button :class "screenshot"
+                :onclick "$HOME/.config/mango/scripts/screenshot.sh region 2> /dev/null"
+                :tooltip "Screenshot"
+            (label :text "" :class "tooltip"))
+            (button :class "wallpaper"
+                :onclick "$HOME/.config/awww/randomize.sh 2> /dev/null"
+                :tooltip "Wallpaper"
+            (label :text "" :class "tooltip"))
+            (button :class "logout"
+                :onclick "wlogout 2> /dev/null"
+                :tooltip "Logout"
+            (label :text "" :class "tooltip")
+            )
+        )
+    )
+)
+
+(defwidget right []
+    (box :class "right" :orientation "v" :space-evenly "false"
+        (cal)
+        (dash)
+        (window-title)
+        (dash)
+        (info)
+        (dash)
+        (apps)
+        (dash)
+        (network)
+        (dash)
+        (disktemp)
+        (system)
+        (dash)
+        (functions)
+    )
+)
+
+(defwindow sidebar
+    :monitor 0
+    :geometry (geometry :x "16px"
+                        :y "35px"
+                        :width "110px"
+                        :height "60%"
+                        :anchor "top left")
+    :stacking "fg"
+    :windowtype "dock"
+    :exclusive true
+        (box :class "main-container"
+        (right)
+    )
+)
