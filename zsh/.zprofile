@@ -2,6 +2,7 @@
 
 export PATH="$HOME/.cargo/bin:$PATH"
 export PATH="$HOME/.local/bin:$PATH"
+export PATH="$HOME/go/bin:$PATH"  # `go install` binaries (clipse, catnip, …)
 
 # Flatpak exports must be on XDG_DATA_DIRS before the compositor starts, so launchers
 # that inherit mango's env (walker) can index flatpak .desktop files. Single source of
