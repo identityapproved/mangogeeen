@@ -5,6 +5,7 @@ alias tmuxconfig="nvim ~/.config/tmux/tmux.conf"
 alias q="exit"
 alias rf="rm -rf"
 alias cat="bat --paging=never"
+alias c="clear"
 
 # Full Gentoo system update (eix-sync = emerge --sync + eix-update)
 sysup() {
@@ -36,10 +37,50 @@ alias fv="nvim \$(fzf)"
 alias yz='yazi'
 alias lz='lazygit'
 alias tl='task list'
+alias himalaya='firejail himalaya-tui'
 
 alias fman="compgen -c | fzf --height 40% --layout reverse --border --no-preview | xargs man"
 alias ftldr="compgen -c | fzf --height 40% --layout reverse --border --no-preview | xargs tldr"
 alias fcd="cd ~ && cd \$(fzf | sed 's/\/[^\/]*$//')"
+
+# ProtonVPN over raw WireGuard. Configs live in /etc/wireguard (dir 755, keys 600).
+# wg-quick needs root -> interactive `doas` only; no passwordless rules.
+#   vpn up [name]   pick (fzf) or name a server and connect
+#   vpn down        tear down the active tunnel
+#   vpn list        list available servers
+#   vpn status      show the active interface/endpoint
+vpn() {
+  local dir=/etc/wireguard
+  local cur; cur=$(ip -o link show type wireguard 2>/dev/null | awk -F': ' 'NR==1{print $2}')
+  case "${1:-status}" in
+    list)
+      for f in "$dir"/*.conf(N); do print -r -- "${f:t:r}"; done
+      ;;
+    up)
+      local name="${2:-}"
+      if [ -z "$name" ]; then
+        name=$(for f in "$dir"/*.conf(N); do print -r -- "${f:t:r}"; done \
+          | fzf --prompt='proton > ' --header='enter: connect / esc: cancel')
+      fi
+      [ -n "$name" ] || return 0
+      [ -f "$dir/$name.conf" ] || { echo "unknown server: $name" >&2; return 1; }
+      [ -n "$cur" ] && doas wg-quick down "$cur"
+      doas wg-quick up "$name"
+      ;;
+    down)
+      [ -n "$cur" ] && doas wg-quick down "$cur" || echo "no active tunnel"
+      ;;
+    status)
+      if [ -n "$cur" ]; then
+        local ep; ep=$(ip route show | awk '$1 ~ /^[0-9]+\.[0-9]+\.[0-9]+\.[0-9]+$/ && /via/ {print $1; exit}')
+        echo "up: ${cur#wg-} (endpoint ${ep:-?})"
+      else
+        echo "down"
+      fi
+      ;;
+    *) echo "usage: vpn {up [name]|down|list|status}" >&2; return 2 ;;
+  esac
+}
 
 alias mpvpl='find . -type d | fzf | xargs -I{} find "{}" -type f | sort -V | mpv --playlist=-'
 alias fbook='find ~/* -type d \( -name "books" \) -exec find {} -type f \( -name "*.pdf" -o -name "*.epub" -o -name "*.mobi" -o -name "*.cbz" -o -name "*.cbr" \) \; | fzf --height 40% --layout reverse --border --no-preview | xargs -r -I {} sh -c "zathura \"{}\" &"'

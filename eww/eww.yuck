@@ -15,8 +15,17 @@
 
 (defpoll IP_ADDR :interval "24h" "ip -br address | awk '$2==\"UP\"{print $3; exit}'")
 
+;; ProtonVPN/WireGuard status (root-free; reads `ip` + user-owned conf)
+(defpoll vpn :interval "10s" "$HOME/.config/scripts/eww-vpn.sh")
+
 ;; focused window title, streamed from mango IPC (same watcher the bars use)
-(deflisten window :initial "..." "$HOME/.config/scripts/mango-ipc.py title --max 24")
+(deflisten window :initial "..." "$HOME/.config/scripts/mango-ipc.py title --max 60")
+
+;; workspaces: one process emits an eww literal of clickable, occupied/active tags
+(deflisten workspaces :initial "(box)" "$HOME/.config/scripts/mango-ipc.py eww-tags")
+
+;; keyboard layout (us/ua), streamed from mango IPC; toggle with Scroll Lock
+(deflisten kblayout :initial "US" "$HOME/.config/scripts/mango-ipc.py layout")
 
 ;; Widgets
 
@@ -42,9 +51,9 @@
         (box :class "info-box-top" :orientation "v" :space-evenly false
             (box :class "info-box-inner" :orientation "h" :space-evenly false
                 (box :class "info-box-left" :orientation "v" :space-evenly false
-                    (label :class "info-icon" :text " :")
-                    (label :class "info-icon" :text " :")
-                    (label :class "info-icon" :text " :")
+                    (label :class "info-icon" :text "󰍹 :")
+                    (label :class "info-icon" :text "󰆍 :")
+                    (label :class "info-icon" :text "󰅐 :")
                 )
                 (box :class "info-box-right" :orientation "v" :space-evenly false
                     (label :class "info-text" :halign "start" :text "${wm}")
@@ -56,11 +65,26 @@
     )
 )
 
+;; workspaces (clickable per-tag buttons, built from the deflisten literal)
+(defwidget workspaces []
+    (literal :content workspaces)
+)
+
+;; keyboard layout indicator (click to toggle via Scroll Lock keysym)
+(defwidget kbd []
+    (box :class "kbd" :halign "center" :space-evenly false
+        (label :class "kbd-label" :text "  ${kblayout}")))
+
+;; system tray (StatusNotifierItem via eww's native systray widget)
+(defwidget tray []
+    (systray :class "tray" :orientation "h" :spacing 8 :icon-size 18 :prepend-new false)
+)
+
 (defwidget window-title []
     (box
         (label :class "window-title"
         :halign "center"
-        :limit-width 16
+        :limit-width 48
         :justify "center"
         :text "${window}")
     )
@@ -72,6 +96,15 @@
     )
 )
 
+(defwidget vpn []
+    (box :class "vpn-label" :orientation "v" :space-evenly "false" :halign "center"
+        (label :class {vpn.up ? "vpn-on" : "vpn-off"}
+               :text {vpn.up ? "󰦝 ${vpn.server}" : "󰦝 off"}
+               :tooltip {vpn.up ? "VPN up — endpoint ${vpn.ip}" : "VPN down"})
+        (label :class "vpn-ip" :visible {vpn.up} :text "${vpn.ip}")
+    )
+)
+
 (defwidget system []
     (box :class "sys_win" :orientation "h" :space-evenly "true" :hexpand "false" :vexpand "false"
         (box :class "sys_cpu_box" :orientation "v" :space-evenly "false" :hexpand "false" :vexpand "false"
@@ -79,7 +112,7 @@
                     :value cpu
                     :class "sys_cpu"
                     :thickness 8
-                (label :text ""
+                (label :text "󰻠"
                     :class "sys_icon_cpu"
                     :limit-width 4
                     :show_truncated false
@@ -91,7 +124,7 @@
                     :value memory
                     :class "sys_mem"
                     :thickness 8
-              (label :text ""
+              (label :text "󰍛"
                     :class "sys_icon_mem"
                     :limit-width 4
                     :show_truncated false
@@ -109,7 +142,7 @@
                   :value disk
                   :class "sys_disk"
                   :thickness 8
-              (label :text ""
+              (label :text "󰋊"
                     :class "sys_icon_disk"
                     :limit-width 4
                     :show_truncated false
@@ -124,11 +157,11 @@
     (label :text "Apps" :class "app-label")
         (box :class "app-box" :orientation "h" :space-evenly "false" :hexpand "false" :vexpand "false" :spacing 10
             (button :class "app-firefox"
-                :onclick "kitty 2> /dev/null" "")
+                :onclick "kitty 2> /dev/null" "󰆍")
             (button :class "app-files"
-                :onclick "kitty -e yazi 2> /dev/null" "")
+                :onclick "kitty -e yazi 2> /dev/null" "󰉋")
             (button :class "app-code"
-                :onclick "walker 2> /dev/null" "")
+                :onclick "walker 2> /dev/null" "󰕰")
         )
     )
 )
@@ -141,15 +174,15 @@
             (button :class "screenshot"
                 :onclick "$HOME/.config/mango/scripts/screenshot.sh region 2> /dev/null"
                 :tooltip "Screenshot"
-            (label :text "" :class "tooltip"))
+            (label :text "󰄀" :class "tooltip"))
             (button :class "wallpaper"
                 :onclick "$HOME/.config/awww/randomize.sh 2> /dev/null"
                 :tooltip "Wallpaper"
-            (label :text "" :class "tooltip"))
+            (label :text "󰋩" :class "tooltip"))
             (button :class "logout"
                 :onclick "wlogout 2> /dev/null"
                 :tooltip "Logout"
-            (label :text "" :class "tooltip")
+            (label :text "󰐥" :class "tooltip")
             )
         )
     )
@@ -159,19 +192,44 @@
     (box :class "right" :orientation "v" :space-evenly "false"
         (cal)
         (dash)
-        (window-title)
-        (dash)
         (info)
         (dash)
         (apps)
         (dash)
         (network)
+        (vpn)
         (dash)
         (disktemp)
         (system)
         (dash)
         (functions)
     )
+)
+
+;; Top bar: workspaces (left) + window title (center) + tray (right)
+(defwidget bar []
+    (centerbox :class "bar" :orientation "h"
+        (box :class "bar-left" :halign "start" :space-evenly false
+            (workspaces))
+        (box :class "bar-center" :halign "center" :space-evenly false
+            (window-title))
+        (box :class "bar-right" :halign "end" :space-evenly false
+            (kbd)
+            (tray))
+    )
+)
+
+(defwindow bar
+    :monitor 0
+    :geometry (geometry :x "0px"
+                        :y "0px"
+                        :width "100%"
+                        :height "28px"
+                        :anchor "top center")
+    :stacking "fg"
+    :windowtype "dock"
+    :exclusive true
+        (bar)
 )
 
 (defwindow sidebar

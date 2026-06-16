@@ -1,0 +1,6 @@
+# tpm-managed tmux plugins (restored via tpm, not tracked here)
+tmux/plugins/
+
+# stray logs
+ncmpcpp/error.log
+*.log

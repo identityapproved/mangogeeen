@@ -42,7 +42,7 @@ $color26: rgba(26, 27, 38, 0.2);
 
 .main-container {
 	background-color: $color23;
-	border-radius: 14px;
+	border-radius: 0;
 	margin: 0px 8px 8px 0px;
 	box-shadow: 1px 1px 3px 1px #16161e;
 }
@@ -60,16 +60,16 @@ tooltip {
 }
 
 .dash {
-	background-color: rgba(20, 22, 30, 0.6);
-	margin: 4px 16px 2px 16px;
-	padding: 2px;
+	background-color: $gray;   // #565f89 muted — visible separator, not bright
+	margin: 6px 16px 4px 16px;
+	padding: 1px;
 }
 .workspaces-box {
 	padding: 6px;
 }
 .workspaces {
 	background-color: $color24;
-	border-radius: 10px;
+	border-radius: 0;
 	color: $color16;
 	padding: 1px 5px 1px 5px;
 }
@@ -80,7 +80,8 @@ tooltip {
 	color:$color12;
 }
 .window-title {
-	color: $gray;
+	color: $white;
+	font-weight: bold;
 	padding: 2px;
 }
 .info-box-left {
@@ -90,6 +91,8 @@ tooltip {
 	padding: 4px;
 }
 .info-icon {
+	font-family: "M+1Code Nerd Font Mono";
+	font-size: 22px;
 	color: $color14;
 }
 .info-text {
@@ -97,38 +100,39 @@ tooltip {
 }
 
 .sys_win {
-    border-radius: 10px;
+    border-radius: 0;
 }
 
 .disk_temp {
-    border-radius: 10px;
+    border-radius: 0;
 }
 .sys_cpu {
   color: $color17;
   background-color: $color22;
-  border-radius: 10px;
+  border-radius: 0;
 }
 
 .sys_disk {
   color: $color9;
   background-color: $color22;
-  border-radius: 10px;
+  border-radius: 0;
 }
 
 .sys_tempe {
   color: $color4;
   background-color: $color22;
-  border-radius: 10px;
+  border-radius: 0;
 }
 
 .sys_mem {
   color: $color11;
   background-color: $color22;
-  border-radius: 10px;
+  border-radius: 0;
 }
 
 .sys_icon_cpu {
-	font-size: 20;
+	font-family: "M+1Code Nerd Font Mono";
+	font-size: 28px;
 	margin: 24px;
 	color: $color17;
 	padding-right: 4px;
@@ -140,37 +144,39 @@ tooltip {
 	color: $color4;
 }
 .sys_icon_disk {
-	font-size: 20;
+	font-family: "M+1Code Nerd Font Mono";
+	font-size: 28px;
 	margin: 24px;
 	color: $color9;
 }
 
 .sys_icon_mem {
-	font-size: 20;
+	font-family: "M+1Code Nerd Font Mono";
+	font-size: 28px;
 	margin: 24px;
 	color: $color11;
 	padding-right: 4px;
 }
 .sys_cpu_box {
-    border-radius: 16px;
+    border-radius: 0;
     margin: 10px 10px 10px 10px;
     padding-left: 20px;
 }
 
 .sys_tempe_box {
-    border-radius: 16px;
+    border-radius: 0;
     margin: 10px 10px 10px 10px;
     padding-right: 20px;
 }
 
 .sys_disk_box {
-    border-radius: 16px;
+    border-radius: 0;
     margin: 10px 10px 10px 10px;
     padding-left: 20px;
 }
 
 .sys_mem_box {
-    border-radius: 16px;
+    border-radius: 0;
     margin: 10px 10px 10px 10px;
     padding-right: 20px;
 }
@@ -220,16 +226,39 @@ tooltip {
 	padding-bottom: 10px;
 	background-color: rgba(122, 162, 247, 0.2);
 }
+.vpn-label {
+	font-size: 16px;
+	font-weight: bold;
+	padding: 4px 0px 4px 0px;
+}
+.vpn-on {
+	color: $color14;
+}
+.vpn-off {
+	color: $color17;
+}
+.vpn-ip {
+	color: $color18;
+	font-size: 11px;
+	font-weight: normal;
+}
+.kbd {
+	padding: 0px 8px;
+}
+.kbd-label {
+	color: $color18;
+	font-weight: bold;
+}
 
 // CALENDAR ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 .cal-container {
-	border-radius: 10px;
+	border-radius: 0;
 }
 .cal-box {
-	border-radius: 10px;
+	border-radius: 0;
 }
 .cal-window {
-	border-radius: 10px;
+	border-radius: 0;
 	padding-top: 10px;
 }
 .month-year {
@@ -249,14 +278,14 @@ tooltip {
 	color: $color17;
 	font-size: 20px;
 	font-weight: bold;
-	border-radius: 10px;
+	border-radius: 0;
 }
 
 .clock {
 	font-size: 38px;
 	font-weight: bold;
 	color: $color13;
-	border-radius: 10px;
+	border-radius: 0;
 	padding-top: 6px;
 }
 
@@ -284,7 +313,8 @@ calendar.highlight {
 	color: $color17;
 }
 .app-box {
-	font-size: 32px;
+	font-family: "M+1Code Nerd Font Mono";
+	font-size: 40px;
 	color: $color5;
 	padding-bottom: 6px;
 }
@@ -307,14 +337,15 @@ calendar.highlight {
 	color: $color17;
 }
 .function-box {
-	font-size: 32px;
+	font-family: "M+1Code Nerd Font Mono";
+	font-size: 40px;
 	color: $color1;
 	padding-bottom: 10px;
 }
 
 // WEATHER ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 .weather-container {
-	border-radius: 10px;
+	border-radius: 0;
 }
 .weather-window {
 	padding: 6px;
@@ -350,7 +381,7 @@ calendar.highlight {
 // MUSIC ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 
 .player-art {
-	border-radius: 12px;
+	border-radius: 0;
 	padding: 6px;
 	margin-left: 4px;
 }
@@ -359,11 +390,11 @@ calendar.highlight {
 	background-repeat: no-repeat;
 	background-position: center;
 	background-size: cover;
-	border-radius: 12px;
+	border-radius: 0;
 }
 .player-tint {
 	background: linear-gradient(to right, rgb(25, 25, 25, 0.9), rgba(38, 38, 38, 0.4));
-	border-radius: 12px;
+	border-radius: 0;
 }
 .player-title {
 	font-size: 16px;
@@ -377,13 +408,13 @@ calendar.highlight {
 .player-bar scale trough highlight {
 	all: unset;
     background-image: linear-gradient(to right, $color17, $color12);
-	border-radius: 24px;
+	border-radius: 0;
 }
 .player-bar scale trough {
 	all: unset;
 	background-color: $darkgray;
     box-shadow: 1px 1px 2px 1px rgba(0, 0, 0, 0.3);
-	border-radius: 24px;
+	border-radius: 0;
 	min-height: 5px;
 	min-width: 150px;
 }
@@ -399,7 +430,7 @@ calendar.highlight {
 .player-controls {
 	background: $color25;
 	padding: 2px 0px 2px 0px;
-	border-radius: 10px;
+	border-radius: 0;
 	margin: 10px 10px 2px 10px;
 }
 .player-toggle {
@@ -452,11 +483,11 @@ calendar.highlight {
 	background-color: $black;
 	min-width: 150px;
 	min-height: 10px;
-	border-radius: 10px;
+	border-radius: 0;
 }
 .scale trough highlight {
 	background-color: $color5;
-	border-radius: 10px;
+	border-radius: 0;
 }
 .metric {
 	font-size: 12px;
@@ -466,11 +497,11 @@ calendar.highlight {
 }
 .metric scale trough highlight {
 	background: linear-gradient(90deg, #7aa2f7 0%, #3d59a1  50%, #9d7cd8 100%);
-	border-radius: 6px;
+	border-radius: 0;
 }
 .metric scale trough {
 	background-color: rgba(20, 22, 30, 0.5);
-	border-radius: 6px;
+	border-radius: 0;
 	min-height: 10px;
 	min-width: 80px;
 	margin-left: 4px;
@@ -480,12 +511,12 @@ calendar.highlight {
 // POWER WINDOW ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 .powerframe {
 	background-color: $black;
-	border-radius: 10px;
+	border-radius: 0;
 	min-width: 108px;
 	min-height: 384px;
 }
 .powermenu {
-	border-radius: 10px;
+	border-radius: 0;
 	font-size: 24px;
 	padding: 10px;
 }
@@ -509,5 +540,53 @@ calendar.highlight {
 }
 .keybind {
 	color: $color4;
+}
+
+// TOP BAR ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+.bar {
+	background-color: rgba(26, 27, 38, 0.85);   // match kitty background_opacity
+	padding: 0px 10px;
+}
+.bar-left, .bar-center, .bar-right {
+	padding: 0px 4px;
+}
+
+// workspaces
+.ws {
+	padding: 2px 0px;
+}
+.ws-btn {
+	font-family: "M+1Code Nerd Font Mono";
+	font-size: 18px;
+	font-weight: bold;
+	color: $color7;             // muted blue, occupied default
+	background-color: transparent;
+	border: 1px solid transparent;
+	border-radius: 0;
+	padding: 0px 9px;
+	margin: 2px 3px;
+	transition: all 200ms ease-in-out;
+}
+.ws-btn.occupied {
+	color: $color7;             // #7aa2f7
+}
+.ws-btn.active {
+	color: #f7768e;             // red — no background, no border
+}
+.ws-btn.urgent {
+	color: #f7768e;
+	border: 1px solid #f7768e;
+}
+.ws-btn:hover {
+	background-color: $medgray; // #414868
+	color: $white;
+}
+
+// system tray
+.tray {
+	padding: 0px 6px;
+}
+.tray > * {
+	margin: 0px 4px;
 }
 

@@ -1,7 +1,7 @@
 .container {
     font-family: "M+1Code Nerd Font Propo";
     font-weight: bold;
-    font-size: 19px;
+    font-size: 15px;
 }
 
 .workspaces {
@@ -15,7 +15,7 @@
     font-weight: bold;
     font-style: normal;
     opacity: 0.8;
-    font-size: 16px;
+    font-size: 13px;
     color: #c0caf5;
     box-shadow: rgba(0, 0, 0, 0.45) 1px 1px 3px 0px;
 }
@@ -92,14 +92,15 @@
 }
 
 .active button {
-    padding: 0px 15px 0px 15px;
+    padding: 0px 13px 0px 13px;
     margin-top: 3px;
     margin-bottom: 3px;
     margin-right: 6px;
     border-radius: 10px;
+    border: 2px solid #bb9af7;
     color: #1a1b26;
-    background: #7dcfff;
-    opacity: 0.8;
+    background: #7aa2f7;
+    opacity: 1.0;
     box-shadow: rgba(0, 0, 0, 0.45) 1px 1px 3px 0px;
 }
 
@@ -438,7 +439,7 @@
 }
 tooltip.background {
     background-color: rgba(26, 27, 38, 0.5);
-    font-size: 18px;
+    font-size: 14px;
     border-radius: 10px;
     color: #c0caf5;
 }
