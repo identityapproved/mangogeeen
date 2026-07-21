@@ -1,0 +1,160 @@
+/*
+ * liferea.css — Tokyonight Night theme for Liferea's item view (WebKitGTK).
+ *
+ * Liferea renders items as HTML in a WebKit view, so the GTK theme only
+ * reaches the window chrome — feed list, item list, toolbar. Everything
+ * inside the reading pane is styled here.
+ *
+ * The filename matters and is easy to get wrong: despite the shipped template
+ * being called user.css, Liferea 1.16 reads the user override from
+ * ~/.config/liferea/liferea.css. It seeds that path with the template on first
+ * run. A user.css placed in the same directory is ignored outright (tested).
+ *
+ * It is loaded after Liferea's built-in stylesheet, so plain declarations win
+ * on source order and nothing here needs !important. Redefining the custom
+ * properties is enough — the shipped rules such as
+ * `body { background: var(--body-bg) }` then resolve to these values.
+ *
+ * Liferea reads this once at startup — restart to see changes.
+ */
+
+:root {
+  --tn-bg:            #1a1b26;
+  --tn-bg-dark:       #16161e;
+  --tn-bg-highlight:  #292e42;
+  --tn-fg:            #c0caf5;
+  --tn-fg-dark:       #a9b1d6;
+  --tn-dark5:         #737aa2;
+  --tn-comment:       #565f89;
+  --tn-blue:          #7aa2f7;
+  --tn-cyan:          #7dcfff;
+  --tn-red:           #f7768e;
+  --tn-green:         #9ece6a;
+  --tn-purple:        #bb9af7;
+
+  /* These override the same names in Liferea's built-in sheet, including the
+     values it sets in its own prefers-color-scheme:dark block. */
+  --text-color:       var(--tn-fg);
+  --text-color-light: var(--tn-dark5);
+  --primary:          var(--tn-blue);
+  /* Transparent so the translucent GTK window shows through. The alpha is
+     owned solely by gtk.css. This depends on the transparency plugin setting
+     an RGBA background on the WebKit view — without it, WebKit falls back to
+     its opaque white base and the pane renders white rather than see-through. */
+  --body-bg:          transparent;
+  --box-bg:           rgba(41, 46, 66, 0.5);
+  --box-text-color:   var(--tn-fg);
+  --box-radius:       0.35rem;
+
+  --error-bg:         rgba(247, 118, 142, 0.12);
+
+  /* Match waybar rather than fc-match sans-serif. The fontconfig alias points
+     sans-serif at "M+1 Nerd Font", but the rest of the rice uses the separate
+     "M+1Code Nerd Font" family — waybar for UI text, kitty for the Mono cut. */
+  --body-font-family: "M+1Code Nerd Font", sans-serif;
+  --mono-font-family: "M+1Code Nerd Font Mono", monospace;
+
+  color-scheme: dark;
+}
+
+/* Inverted, matching kitty's selection_background/selection_foreground rather
+   than the GTK accent — that differs between the Dark and Pink-Dark variants. */
+::selection {
+  color: var(--tn-bg);
+  background: var(--tn-fg);
+}
+
+a[href]:hover {
+  color: var(--tn-cyan);
+}
+
+/* Item header: title in full fg, metadata line dimmed, separated from the
+   body by a rule so the two never read as one block of text. */
+div.item header {
+  border-bottom: 1px solid var(--tn-bg-highlight);
+  padding-bottom: 0.5rem;
+  margin-bottom: 1rem;
+}
+
+div.item header > h1 {
+  font-weight: 600;
+  letter-spacing: -0.01em;
+}
+
+h1, h2, h3, h4, h5, h6 {
+  color: var(--tn-fg);
+}
+
+code, pre, tt, kbd, samp {
+  font-family: var(--mono-font-family);
+}
+
+code {
+  color: var(--tn-green);
+}
+
+pre code {
+  color: inherit;
+}
+
+pre {
+  border: 1px solid var(--tn-bg-highlight);
+  line-height: 1.5;
+}
+
+blockquote {
+  color: var(--tn-fg-dark);
+}
+
+hr {
+  border: 0;
+  border-top: 1px solid var(--tn-bg-highlight);
+  margin: 1.5rem 0;
+}
+
+/* Feeds embed tables freely and the shipped stylesheet leaves them
+   unstyled, which renders as white-on-white cells in dark mode. */
+table {
+  border-collapse: collapse;
+  max-width: 100%;
+  margin: var(--box-margin);
+}
+
+th, td {
+  border: 1px solid var(--tn-bg-highlight);
+  padding: 0.35rem 0.6rem;
+  text-align: left;
+}
+
+th {
+  background: var(--box-bg);
+  color: var(--tn-fg);
+  font-weight: 600;
+}
+
+.category {
+  border-color: var(--tn-comment);
+  color: var(--tn-dark5);
+}
+
+/* The shipped rule hardcodes color:black on a light error box. */
+#errors {
+  border: 1px solid var(--tn-red);
+  background: var(--error-bg);
+  color: var(--tn-fg);
+  border-radius: var(--box-radius);
+}
+
+pre.errorOutput {
+  color: var(--tn-fg-dark);
+}
+
+div.comment {
+  border: 1px solid var(--tn-bg-highlight);
+  border-radius: var(--box-radius);
+}
+
+div.comment_title {
+  background: var(--box-bg);
+  color: var(--tn-fg);
+}

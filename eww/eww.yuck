@@ -27,6 +27,9 @@
 ;; keyboard layout (us/ua), streamed from mango IPC; toggle with Scroll Lock
 (deflisten kblayout :initial "US" "$HOME/.config/scripts/mango-ipc.py layout")
 
+;; default audio sink (name/volume/mute); runs while the sidebar window is open.
+(defpoll audio :interval "2s" "$HOME/.config/scripts/eww-audio.sh status")
+
 ;; Widgets
 
 (defwidget dash []
@@ -106,7 +109,7 @@
 )
 
 (defwidget system []
-    (box :class "sys_win" :orientation "h" :space-evenly "true" :hexpand "false" :vexpand "false"
+    (box :class "sys_win" :orientation "h" :space-evenly "false" :hexpand "false" :vexpand "false" :halign "center"
         (box :class "sys_cpu_box" :orientation "v" :space-evenly "false" :hexpand "false" :vexpand "false"
             (circular-progress
                     :value cpu
@@ -188,8 +191,26 @@
     )
 )
 
+;; Sound: default-output cycle switcher + volume (mute toggle + slider)
+(defwidget sound []
+    (box :class "sound-container" :orientation "v" :space-evenly false :hexpand true
+        (label :text "Sound" :class "sound-label" :halign "center")
+        (label :class "sound-perc" :halign "center" :text "${audio.vol}%")
+        (button :class "sound-output" :halign "center"
+                :onclick "$HOME/.config/scripts/eww-audio.sh next"
+            (box :orientation "h" :space-evenly false :spacing 6
+                (label :text "󰓃")
+                (label :class "sound-name" :limit-width 9 :text {audio.name})
+                (label :text "󰅂")))
+        (box :class "sound-vol" :orientation "h" :space-evenly false :spacing 6
+            (button :class "sound-mute"
+                    :onclick "$HOME/.config/scripts/eww-audio.sh mute"
+                    :text {audio.muted ? "󰝟" : "󰕾"})
+            (scale :class "vol-scale" :hexpand true :value {audio.vol} :min 0 :max 101
+                   :onchange "$HOME/.config/scripts/eww-audio.sh set {}"))))
+
 (defwidget right []
-    (box :class "right" :orientation "v" :space-evenly "false"
+    (box :class "right" :orientation "v" :space-evenly "false" :vexpand true
         (cal)
         (dash)
         (info)
@@ -203,6 +224,8 @@
         (system)
         (dash)
         (functions)
+        (dash)
+        (sound)
     )
 )
 
@@ -234,15 +257,15 @@
 
 (defwindow sidebar
     :monitor 0
-    :geometry (geometry :x "16px"
-                        :y "35px"
+    :geometry (geometry :x "0px"
+                        :y "0px"
                         :width "110px"
-                        :height "60%"
+                        :height "100%"
                         :anchor "top left")
     :stacking "fg"
     :windowtype "dock"
     :exclusive true
-        (box :class "main-container"
+        (box :class "main-container" :vexpand true :valign "fill"
         (right)
     )
 )

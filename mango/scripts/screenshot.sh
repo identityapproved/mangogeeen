@@ -23,8 +23,21 @@ notify_result() {
   fi
 }
 
+have_swappy() { command -v swappy >/dev/null 2>&1; }
+
+# capture <mode> <grim geometry args...>
+# Routes grim through swappy when available, otherwise saves directly.
+capture() {
+  local mode="$1"; shift
+  if have_swappy; then
+    grim "$@" - | swappy -f - -o "$outfile"
+  else
+    grim "$@" "$outfile"
+  fi
+}
+
 capture_full() {
-  if grim - | swappy -f - -o "$outfile"; then
+  if capture full; then
     notify_result
   else
     notify "Screenshot failed" "Mode: full"
@@ -33,7 +46,7 @@ capture_full() {
 }
 
 capture_output() {
-  if grim -g "$(slurp -o)" - | swappy -f - -o "$outfile"; then
+  if capture output -g "$(slurp -o)"; then
     notify_result
   else
     notify "Screenshot failed" "Mode: output"
@@ -42,7 +55,7 @@ capture_output() {
 }
 
 capture_region() {
-  if grim -g "$(slurp)" - | swappy -f - -o "$outfile"; then
+  if capture region -g "$(slurp)"; then
     notify_result
   else
     notify "Screenshot failed" "Mode: region"

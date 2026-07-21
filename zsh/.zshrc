@@ -8,7 +8,8 @@ export GOPATH="$HOME/go"
 export XDG_DATA_HOME="$HOME/.local/share"
 export AGENTSDOTS_ROOT="/mnt/kodak/github/agentsdots"
 
-ZSH_THEME="random"
+# Prompt is handled by Starship (see end of file); leave oh-my-zsh theme empty
+ZSH_THEME=""
 
 zstyle ':omz:update' mode auto
 zstyle ':completion::complete:*' use-cache 1
@@ -31,6 +32,18 @@ plugins=(
 
 source $ZSH/oh-my-zsh.sh
 source $HOME/.aliases
+
+# SSH agent — start once, persist the env to ~/.ssh/environment, reuse across shells
+SSH_ENV="$HOME/.ssh/environment"
+_start_ssh_agent() {
+  ssh-agent | sed 's/^echo/#echo/' > "$SSH_ENV"
+  chmod 600 "$SSH_ENV"
+  source "$SSH_ENV" >/dev/null
+}
+[ -f "$SSH_ENV" ] && source "$SSH_ENV" >/dev/null
+if ! ps -p "${SSH_AGENT_PID:-0}" >/dev/null 2>&1; then
+  _start_ssh_agent
+fi
 
 # FZF — key-bindings (CTRL+R history, CTRL+T files, ALT+C cd)
 source /usr/share/fzf/key-bindings.zsh
@@ -67,3 +80,5 @@ eval "$(starship init zsh)"
 
 # zoxide must stay at the very end of this file
 eval "$(zoxide init --cmd cd zsh)"
+
+. "$HOME/.local/share/../bin/env"

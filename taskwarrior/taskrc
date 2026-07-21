@@ -1,0 +1,9 @@
+# Taskwarrior config (from hyprarchdots, adapted for this host).
+# Lives in the repo and is symlinked to ~/.config/task (XDG location task 3.x reads).
+data.location=/mnt/kodak/taskwarrior/task
+news.version=3.4.2
+
+pager=bat --paging=always
+editor=nvim -f
+
+include ~/.config/task/themes/tokyonight-256.theme

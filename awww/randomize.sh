@@ -14,6 +14,16 @@ set_random() {
   [ -n "$img" ] && awww img --resize=crop --fill-color 1a1b26 "$img"
 }
 
+# True while a fullscreen client is focused (games, fullscreen video). The
+# awww img transition hitches the GPU, which can freeze a fullscreen game, so
+# the loop skips cycling until focus leaves fullscreen. No-op if mmsg/jq absent.
+focused_fullscreen() {
+  command -v mmsg >/dev/null 2>&1 && command -v jq >/dev/null 2>&1 || return 1
+  fs=$(mmsg get focusing-client 2>/dev/null \
+    | jq -r 'select(.is_fullscreen or .is_fakefullscreen) | true' 2>/dev/null)
+  [ "$fs" = true ]
+}
+
 if [ "$1" = "loop" ]; then
   dir="${2:-$DEFAULT_DIR}"
   interval="${3:-300}"
@@ -24,7 +34,7 @@ if [ "$1" = "loop" ]; then
     flock -n 9 || { echo "awww randomize: cycler already running" >&2; exit 0; }
   fi
   while true; do
-    set_random "$dir"
+    focused_fullscreen || set_random "$dir"
     sleep "$interval"
   done
 else

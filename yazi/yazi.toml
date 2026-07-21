@@ -157,3 +157,13 @@ sort_by        = "none"
 sort_sensitive = false
 sort_reverse   = false
 sort_translit  = false
+
+[plugin]
+prepend_previewers = [
+	{ mime = "image/x-canon-cr2", run = "raw" },
+	{ url = "*.{cr2,cr3,nef,arw,raf,orf,rw2,dng}", run = "raw" },
+]
+prepend_preloaders = [
+	{ mime = "image/x-canon-cr2", run = "raw" },
+	{ url = "*.{cr2,cr3,nef,arw,raf,orf,rw2,dng}", run = "raw" },
+]

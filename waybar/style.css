@@ -1,221 +1,177 @@
-* {
-    border: none;
-    border-radius: 0px;
-    font-family: Roboto Mono SemiBold, Iosevka Nerd Font;
-    font-size: 18px;
-    font-style: normal;
-    min-height: 0;
-	}
+/* Cloned from hyprarchdots (Lain) — recolored to Tokyo Night. */
+@define-color lain-bg #1a1b26;
+@define-color lain-bg-2 #24283b;
+@define-color lain-fg #c0caf5;
+@define-color lain-accent #7aa2f7;
+@define-color lain-fg-dim #565f89;
 
-window#waybar {
-    background: rgba(76,86,106,0.8);
-    color: #c0caf5
+* {
+  font-family: "M+1Code Nerd Font", "Symbols Nerd Font", sans-serif;
+  font-size: 12px;
+  font-weight: 700;
+  margin: 0;
+  padding: 0;
+  border: none;
+  border-radius: 0;
+}
+
+#waybar {
+  background-color: rgba(26, 27, 38, 0.9);
+  color: @lain-fg;
+  border-bottom: 2px solid @lain-fg;
 }
 
 #workspaces {
-	background: #1a1b26;
-	margin: 5px 5px;
-    padding: 8px 5px;
-	border-radius: 16px;
-    border: solid 0px #c0caf5;
-    font-weight: normal;
-    font-style: normal;
-}
-#workspaces button {
-    padding: 0px 5px;
-    margin: 0px 3px;
-    border-radius: 16px;
-    color: #a9b1d6;
-    background-color: #565f89;
-    transition: all 0.3s ease-in-out;
-}
-#workspaces button.active {
-    color: #c0caf5;
-    background-color: #c0caf5;
-    border-radius: 16px;
-    min-width: 50px;
-    background-size: 400% 400%;
-    transition: all 0.3s ease-in-out;
-}
-#workspaces button:hover {
-	background-color: #c0caf5;
-	color: #c0caf5;
-	border-radius: 16px;
-  min-width: 50px;
-  background-size: 400% 400%;
+  background-color: @lain-bg;
+  padding: 2px 0;
+  margin: 4px 6px;
 }
 
-#clock, 
-#pulseaudio, 
-#network, 
-#custom-launcher, 
-#custom-pacmanAlt,
+#workspaces button {
+  padding: 2px 6px;
+  margin: 2px 3px;
+  color: @lain-fg-dim;
+  background-color: @lain-bg;
+  border: 1px solid @lain-fg-dim;
+}
+
+#workspaces button.active {
+  color: @lain-bg;
+  background-color: @lain-fg;
+  border: 1px solid @lain-fg;
+}
+
+#workspaces button.urgent {
+  color: @lain-bg;
+  background-color: @lain-accent;
+}
+
+#custom-timer {
+  font-family: "M+1Code Nerd Font", "Symbols Nerd Font", sans-serif;
+  min-width: 88px;
+}
+
+#custom-timer.disabled,
+#custom-timer.idle {
+  color: @lain-fg-dim;
+}
+
+#custom-timer.select,
+#custom-timer.pomo_msg {
+  color: @lain-accent;
+}
+
+#custom-timer.running,
+#custom-timer.pomo_break {
+  color: @lain-fg;
+}
+
+#custom-timer.paused {
+  background-color: rgba(122, 162, 247, 0.12);
+  color: @lain-accent;
+  border-color: @lain-accent;
+}
+
+#custom-timer.warning {
+  color: #f7768e;
+  animation-name: timer-warning;
+  animation-duration: 1s;
+  animation-timing-function: ease-in-out;
+  animation-iteration-count: infinite;
+  animation-direction: alternate;
+}
+
+#custom-timer.done,
+#custom-timer.reset {
+  color: @lain-bg;
+  background-color: @lain-accent;
+  border-color: @lain-accent;
+}
+
+#window,
+#custom-timer,
+#custom-media,
+#custom-spotify,
+#custom-weather,
+#custom-storage,
+#custom-tasks,
+#custom-nb,
+#custom-mail,
+#custom-temperature,
+#custom-cava,
 #cpu,
 #memory,
-#disk,
-#cava,
+#temperature,
+#wireplumber,
+#custom-mic,
+#tray,
 #language,
-#windows,
-
-#cava{
-    background-color: #1a1b26;
-    color: #9ece6a;
-    border-radius: 16px;
-    margin: 5px;
-    margin-left: 5px;
-    margin-right: 5px;
-    padding: 0px 10px 0px 10px;
-    font-weight: bold;      
-}
-
-#custom-pacmanAlt{
-    background-color: #1a1b26;
-    color: #9ece6a;
-    border-radius: 16px;
-    margin: 5px;
-    margin-left: 5px;
-    margin-right: 5px;
-    padding: 0px 10px 0px 10px;
-    font-weight: bold;      
+#custom-language,
+#clock,
+#custom-power {
+  background-color: @lain-bg-2;
+  border: 1px solid @lain-fg-dim;
+  color: @lain-fg;
+  padding: 2px 8px;
+  margin: 4px 0px;
 }
 
 #tray {
-    background: #1a1b26;
-    margin: 5px 5px 5px 5px;
-    border-radius: 16px;
-    padding: 0px 12px;
-    /*border-right: solid 1px #16161e;*/
+  padding: 2px 6px;
 }
 
-#clock {
-    color: #c0caf5;
-    background-color: #1a1b26;
-    border-radius: 0px 0px 0px 24px;
-    padding-left: 13px;
-    padding-right: 15px;
-    margin-right: 0px;
-    margin-left: 10px;
-    margin-top: 0px;
-    margin-bottom: 0px;
-    font-weight: bold;
-    /*border-left: solid 1px #16161e;*/
+#custom-mic {
+  /* wider box; symmetric padding keeps the single glyph centered */
+  min-width: 13px;
+  padding: 0px 9px;
 }
 
-#network {
-    color: #c0caf5;
-    border-radius: 8px;
-    margin-right: 5px;
-    font-weight: bold;
+#custom-nb.empty {
+  color: @lain-fg-dim;
 }
 
-#pulseaudio {
-    color: #3d59a1;
-    background: #1a1b26;
-    border-radius: 16px;
-    margin: 5px;
-    margin-left: 5px;
-    margin-right: 5px;
-    padding: 0px 10px 0px 10px;
-    font-weight: bold;
+#custom-mic.muted {
+  color: @lain-fg-dim;
 }
 
-#custom-launcher {
-    color: #c0caf5;
-    background-color: #1a1b26;
-    border-radius: 0px 24px 0px 0px;
-    margin: 0px 0px 0px 0px;
-    padding: 0 20px 0 13px;
-    /*border-right: solid 1px #16161e;*/
-    font-size: 20px;
+#custom-mic.unmuted {
+  color: @lain-accent;
 }
 
-#custom-launcher button:hover {
-    background-color: #f7768e;
-    color: transparent;
-    border-radius: 8px;
-    margin-right: -5px;
-    margin-left: 10px;
+#custom-cava {
+  color: @lain-accent;
+  font-family: "M+1Code Nerd Font Mono", monospace;
+  /* bars fill the module, but keep sibling vertical margin */
+  padding: 0;
+  margin: 4px 0;
+  min-width: 92px;
 }
 
-#custom-playerctl {
-	background: #1a1b26;
-    padding: 0px 5px 0px 10px;
-	border-radius: 16px;
-    /*border-left: solid 1px #16161e;*/
-    /*border-right: solid 1px #16161e;*/
-    margin: 5px 7px;
-    font-weight: normal;
-    font-style: normal;
-    font-size: 16px;
+#custom-media {
+  color: @lain-accent;
 }
 
-#custom-playerlabel {
-    background: transparent;
-    padding-left: 10px;
-    padding-right: 5px;
-    border-radius: 16px;
-    /*border-left: solid 1px #16161e;*/
-    /*border-right: solid 1px #16161e;*/
-    margin-top: 5px;
-    margin-bottom: 5px;
-    font-weight: normal;
-    font-style: normal;
+#custom-power {
+  padding: 2px 10px;
 }
 
-#window {
-    background: #1a1b26;
-    padding-left: 15px;
-    padding-right: 15px;
-    border-radius: 16px;
-    /*border-left: solid 1px #16161e;*/
-    /*border-right: solid 1px #16161e;*/
-    margin-top: 5px;
-    margin-bottom: 5px;
-    font-weight: normal;
-    font-style: normal;
+#custom-weather {
+  font-family: "M+1Code Nerd Font", "Noto Sans Symbols", sans-serif;
 }
 
-#cpu {
-    background-color: #1a1b26;
+#custom-power:hover,
+#workspaces button:hover {
+  background-color: @lain-accent;
+  color: @lain-bg;
+}
+
+@keyframes timer-warning {
+  0% {
     color: #f7768e;
-    border-radius: 16px;
-    margin: 5px;
-    margin-left: 5px;
-    margin-right: 5px;
-    padding: 0px 10px 0px 10px;
-    font-weight: bold;
+    opacity: 1;
+  }
+  100% {
+    color: #f7768e;
+    opacity: 0.7;
+  }
 }
-
-#memory {
-    background-color: #1a1b26;
-    color: #bb9af7;
-    border-radius: 16px;
-    margin: 5px;
-    margin-left: 5px;
-    margin-right: 5px;
-    padding: 0px 10px 0px 10px;
-    font-weight: bold;
-}
-
-#disk {
-    background-color: #1a1b26;
-    color: #ff9e64;
-    border-radius: 16px;
-    margin: 5px;
-    margin-left: 5px;
-    margin-right: 5px;
-    padding: 0px 10px 0px 10px;
-    font-weight: bold;
-}
-
-#language {
-    background-color: #1a1b26;
-    color: #9ece6a;
-    border-radius: 16px;
-    margin: 5px;
-    margin-left: 5px;
-    margin-right: 5px;
-    padding: 0px 10px 0px 10px;
-    font-weight: bold;
-}
-

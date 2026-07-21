@@ -27,3 +27,13 @@ desc = "Show Git file changes"
 on = [ "R" ]
 run = "plugin rsync"
 desc = "Copy files using rsync"
+
+[[mgr.prepend_keymap]]
+on = [ "z" ]
+run = "plugin zoxide"
+desc = "Jump via zoxide"
+
+[[mgr.prepend_keymap]]
+on = [ "Z" ]
+run = "plugin fzf"
+desc = "Jump via fzf"

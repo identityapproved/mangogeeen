@@ -1,0 +1,76 @@
+rule.precedence.color=deleted,completed,active,keyword.,tag.,project.,overdue,scheduled,due.today,due,blocked,blocking,recurring,tagged,uda.
+
+# Tokyo Night theme for Taskwarrior (256-color approximations of the palette:
+# bg color234, fg color189, blue color111, cyan color117, green color150,
+# purple color141, red color210, orange color215, yellow color179, dim color238).
+
+# General decoration
+color.label=
+color.label.sort=
+color.alternate=on color234
+color.header=color111
+color.footnote=color111
+color.warning=bold color215
+color.error=color189 on color210
+color.debug=color60
+
+# Task state
+color.completed=color238
+color.deleted=color238
+color.active=color234 on color150
+color.recurring=color141
+color.scheduled=on color235
+color.until=
+color.blocked=color189 on color238
+color.blocking=color234 on color215
+
+# Project
+color.project.none=color238
+
+# Priority
+color.uda.priority.H=bold color210
+color.uda.priority.M=color179
+color.uda.priority.L=color111
+
+# Tags
+color.tag.next=bold color215
+color.tag.none=
+color.tagged=color150
+
+# Due
+color.due.today=bold color210
+color.due=color215
+color.overdue=bold color210
+
+# Report: burndown
+color.burndown.done=on color150
+color.burndown.pending=on color210
+color.burndown.started=on color179
+
+# Report: history
+color.history.add=color234 on color150
+color.history.delete=color234 on color210
+color.history.done=color234 on color111
+
+# Report: summary
+color.summary.background=color189 on color234
+color.summary.bar=color234 on color150
+
+# Command: calendar
+color.calendar.due.today=color234 on color210
+color.calendar.due=color234 on color215
+color.calendar.holiday=color234 on color179
+color.calendar.scheduled=on color235
+color.calendar.overdue=color189 on color210
+color.calendar.today=color234 on color111
+color.calendar.weekend=on color235
+color.calendar.weeknumber=color111
+
+# Command: sync
+color.sync.added=color150
+color.sync.changed=color179
+color.sync.rejected=color210
+
+# Command: undo
+color.undo.after=color150
+color.undo.before=color210

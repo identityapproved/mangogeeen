@@ -4,3 +4,13 @@ tmux/plugins/
 # stray logs
 ncmpcpp/error.log
 *.log
+
+# clipse runtime data (machine-local clipboard contents)
+clipse/clipboard_history.json
+clipse/tmp_files/
+
+# liferea/ carries theming and config only. Subscriptions (feedlist.opml) and
+# the item DB live outside the repo by design — ~/.config/liferea is a real
+# directory, not a symlink to this one — so nothing of Liferea's needs ignoring
+# here beyond Python bytecode.
+liferea/plugins/__pycache__/

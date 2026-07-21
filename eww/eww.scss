@@ -1,9 +1,35 @@
+// DESIGN TOKENS ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+// Single source of truth for fonts, sizes, icons and spacing.
+// Used across the bar and the sidebar widgets so everything stays consistent.
+
+// fonts
+$font-main: "JetBrains Mono NL";
+$font-icon: "M+1Code Nerd Font Mono";
+
+// font sizes
+$fs-display: 38px;   // big display elements (clock)
+$fs-title:   18px;   // block headings: Apps, Functions, Sound, network, vpn
+$fs-item:    14px;   // values / labels (base text)
+$fs-small:   12px;   // captions, secondary text
+
+// icon sizes (nerd-font glyphs)
+$icon-sm: 24px;      // inline / info / mute icons
+$icon-md: 32px;      // circular-progress glyphs, network arrows
+$icon-lg: 44px;      // app / function button rows
+
+// spacing
+$pad-sm:  4px;
+$pad:     6px;
+$pad-lg:  10px;
+$gap:     10px;
+$block-margin: 8px;
+
 // GENERAL STUFF ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 *{
 	all: unset;
 	/* font-family: CaskaydiaCove Nerd Font Mono; */
-	font-family: JetBrains Mono NL;
-	font-size: 14px;
+	font-family: $font-main;
+	font-size: $fs-item;
 }
 
 $white: #c0caf5;
@@ -43,12 +69,13 @@ $color26: rgba(26, 27, 38, 0.2);
 .main-container {
 	background-color: $color23;
 	border-radius: 0;
-	margin: 0px 8px 8px 0px;
-	box-shadow: 1px 1px 3px 1px #16161e;
+	margin: 0px;
+  padding: 3px 0px 0px 3px;
 }
+
 button {
 	color: $color10;
-	padding: 6px;
+	padding: $pad;
 }
 button:hover {
 	color: $color16;
@@ -61,7 +88,7 @@ tooltip {
 
 .dash {
 	background-color: $gray;   // #565f89 muted — visible separator, not bright
-	margin: 6px 16px 4px 16px;
+	// margin: $pad 16px $pad-sm 16px;
 	padding: 1px;
 }
 .workspaces-box {
@@ -81,22 +108,24 @@ tooltip {
 }
 .window-title {
 	color: $white;
+	font-size: $fs-item;
 	font-weight: bold;
 	padding: 2px;
 }
 .info-box-left {
-	padding: 4px;
+	padding: $pad-sm;
 }
 .info-box-right {
-	padding: 4px;
+	padding: $pad-sm;
 }
 .info-icon {
-	font-family: "M+1Code Nerd Font Mono";
-	font-size: 22px;
+	font-family: $font-icon;
+	font-size: $icon-sm;
 	color: $color14;
 }
 .info-text {
 	color: $color19;
+	font-size: $fs-item;
 }
 
 .sys_win {
@@ -115,50 +144,48 @@ tooltip {
 .sys_disk {
   color: $color9;
   background-color: $color22;
-  border-radius: 0;
 }
 
 .sys_tempe {
   color: $color4;
   background-color: $color22;
-  border-radius: 0;
 }
 
 .sys_mem {
   color: $color11;
   background-color: $color22;
-  border-radius: 0;
 }
 
 .sys_icon_cpu {
-	font-family: "M+1Code Nerd Font Mono";
+	font-family: $font-icon;
 	font-size: 28px;
 	margin: 24px;
 	color: $color17;
-	padding-right: 4px;
+	// padding-right: 4px;
 }
 
 .sys_icon_tempe {
-	font-size: 20;
+	font-family: $font-icon;
+	font-size: 20px;
 	margin: 24px;
 	color: $color4;
 }
 .sys_icon_disk {
-	font-family: "M+1Code Nerd Font Mono";
+	font-family: $font-icon;
 	font-size: 28px;
 	margin: 24px;
 	color: $color9;
 }
 
 .sys_icon_mem {
-	font-family: "M+1Code Nerd Font Mono";
+	font-family: $font-icon;
 	font-size: 28px;
 	margin: 24px;
 	color: $color11;
 	padding-right: 4px;
 }
+
 .sys_cpu_box {
-    border-radius: 0;
     margin: 10px 10px 10px 10px;
     padding-left: 20px;
 }
@@ -180,56 +207,67 @@ tooltip {
     margin: 10px 10px 10px 10px;
     padding-right: 20px;
 }
+
 .mem_perc {
 	color: $color11;
-	padding-top: 6px;
+	font-size: $fs-item;
+	padding-top: $pad;
 }
+
 .cpu_perc {
 	color: $color17;
-	padding-top: 6px;
+	font-size: $fs-item;
+	padding-top: $pad;
 }
 
 .tempe_perc {
 	color: $color4;
-	padding-top: 6px;
+	font-size: $fs-item;
+	padding-top: $pad;
 }
 
 .disk_perc {
 	color: $color9;
-	padding-top: 6px;
+	font-size: $fs-item;
+	padding-top: $pad;
 }
 
 .network {
 	padding: 5px 0px 5px 0px;
 }
+
 .network-label {
 	color: $color18;
-	font-size: 16px;
+	font-size: $fs-title;
 	font-weight: bold;
-	padding: 10px 0px 4px 0px;
+	padding: $pad-lg 0px $pad-sm 0px;
 }
+
 .network-up {
   color: $color14;
-  font-size: 30px;
+  font-size: $icon-md;
 }
+
 .network-down {
   color: $color17;
-  font-size: 30px;
+  font-size: $icon-md;
 }
+
 .network-graph-up {
 	color: $color14;
 	padding: 10px;
 	background-color: rgba(203, 166, 247, 0.2);
 }
+
 .network-graph-down {
 	color: $color17;
 	padding-bottom: 10px;
 	background-color: rgba(122, 162, 247, 0.2);
 }
 .vpn-label {
-	font-size: 16px;
+	font-size: $fs-title;
 	font-weight: bold;
-	padding: 4px 0px 4px 0px;
+	padding: $pad-sm 0px $pad-sm 0px;
 }
 .vpn-on {
 	color: $color14;
@@ -239,15 +277,69 @@ tooltip {
 }
 .vpn-ip {
 	color: $color18;
-	font-size: 11px;
+	font-size: $fs-small;
 	font-weight: normal;
 }
 .kbd {
-	padding: 0px 8px;
+	padding: 0px $block-margin;
 }
 .kbd-label {
 	color: $color18;
+	font-size: $fs-item;
 	font-weight: bold;
+}
+
+// SOUND ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+.sound-container {
+	// padding: 0px $pad-lg;
+}
+.sound-label {
+	font-size: $fs-title;
+	color: $color17;
+}
+.sound-output {
+	color: $color10;
+	font-size: $fs-item;
+	padding: $pad-sm;
+}
+.sound-output:hover {
+	color: $color16;
+}
+.sound-name {
+	color: $color18;
+	font-size: $fs-item;
+	font-weight: bold;
+}
+.sound-mute {
+	color: $color5;
+	font-size: $icon-sm;
+	padding-right: $pad-sm;
+}
+.sound-perc {
+	color: $color18;
+	font-size: $fs-small;
+	font-weight: bold;
+}
+.vol-scale trough {
+	all: unset;
+	background-color: $black;
+	min-height: 10px;
+	border-radius: 5px;
+}
+.vol-scale trough highlight {
+	background-color: $color5;
+	border-radius: 5px;
+}
+.vol-scale slider {
+	background-color: $color18;
+	border-radius: 50%;
+	min-width: 16px;
+	min-height: 16px;
+	margin: -4px 0;
+	box-shadow: 1px 1px 2px 1px rgba(0,0,0,0.4);
+}
+.vol-scale:hover slider {
+	background-color: $white;
 }
 
 // CALENDAR ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
@@ -259,34 +351,34 @@ tooltip {
 }
 .cal-window {
 	border-radius: 0;
-	padding-top: 10px;
+	padding-top: $pad-lg;
 }
 .month-year {
-		font-size: 12px;
+		font-size: $fs-small;
 		font-weight: bold;
-		margin: 10px;
+		margin: $pad-lg;
 		padding: 1px;
 		color: $lightgray;
 }
 .day-names {
-		margin: 10px;
-		font-size: 12px;
+		margin: $pad-lg;
+		font-size: $fs-small;
 		font-weight: bold;
 		color: $color10;
 }
 .date {
 	color: $color17;
-	font-size: 20px;
+	font-size: $fs-title;
 	font-weight: bold;
 	border-radius: 0;
 }
 
 .clock {
-	font-size: 38px;
+	font-size: $fs-display;
 	font-weight: bold;
 	color: $color13;
 	border-radius: 0;
-	padding-top: 6px;
+	padding-top: $pad;
 }
 
 calendar {
@@ -302,45 +394,45 @@ calendar.button {
 calendar.highlight {
 	color: $color18;
 	font-weight: bold;
-	padding: 10px;
-	margin: 10px;
+	padding: $pad-lg;
+	margin: $pad-lg;
 }
 .app-container {
-	font-size: 28px;
+	font-size: $icon-md;
 }
 .app-label {
-	font-size: 18px;
+	font-size: $fs-title;
 	color: $color17;
 }
 .app-box {
-	font-family: "M+1Code Nerd Font Mono";
-	font-size: 40px;
+	font-family: $font-icon;
+	font-size: $icon-lg;
 	color: $color5;
-	padding-bottom: 6px;
+	padding-bottom: $pad;
 }
 .quote-container {
-	padding-top: 10px;
+	padding-top: $pad-lg;
 }
 .quote-label {
-	font-size: 16px;
+	font-size: $fs-title;
 	font-weight: bold;
 	color: $color9;
 }
 .quote {
-	font-size: 12px;
+	font-size: $fs-small;
 	font-weight: bold;
 	color: $white;
-	padding: 10px;
+	padding: $pad-lg;
 }
 .function-label {
-	font-size: 20px;
+	font-size: $fs-title;
 	color: $color17;
 }
 .function-box {
-	font-family: "M+1Code Nerd Font Mono";
-	font-size: 40px;
+	font-family: $font-icon;
+	font-size: $icon-lg;
 	color: $color1;
-	padding-bottom: 10px;
+	padding-bottom: $pad-lg;
 }
 
 // WEATHER ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
@@ -545,10 +637,10 @@ calendar.highlight {
 // TOP BAR ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 .bar {
 	background-color: rgba(26, 27, 38, 0.85);   // match kitty background_opacity
-	padding: 0px 10px;
+	padding: 0px $pad-lg;
 }
 .bar-left, .bar-center, .bar-right {
-	padding: 0px 4px;
+	padding: 0px $pad-sm;
 }
 
 // workspaces
@@ -556,8 +648,8 @@ calendar.highlight {
 	padding: 2px 0px;
 }
 .ws-btn {
-	font-family: "M+1Code Nerd Font Mono";
-	font-size: 18px;
+	font-family: $font-icon;
+	font-size: $fs-title;        // bar is height-constrained (28px) — kept modest
 	font-weight: bold;
 	color: $color7;             // muted blue, occupied default
 	background-color: transparent;
@@ -584,9 +676,9 @@ calendar.highlight {
 
 // system tray
 .tray {
-	padding: 0px 6px;
+	padding: 0px $pad;
 }
 .tray > * {
-	margin: 0px 4px;
+	margin: 0px $pad-sm;
 }
 

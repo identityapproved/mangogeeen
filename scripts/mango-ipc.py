@@ -30,15 +30,15 @@ import time
 
 # Inline Pango colors (Ironbar script labels can't take CSS classes, so style
 # inline here; tweak to match the ironbar theme once it's in place).
-COLOR_ACTIVE = "#7aa2f7"   # focused tag
+COLOR_ACTIVE = "#7aa2f7"  # focused tag
 COLOR_OCCUPIED = "#c0caf5"  # has clients, not focused
-COLOR_EMPTY = "#565f89"    # no clients
-COLOR_URGENT = "#f7768e"   # urgent
+COLOR_EMPTY = "#565f89"  # no clients
+COLOR_URGENT = "#f7768e"  # urgent
 
 # Layout abbreviations for the keyboard-layout module.
 LAYOUT_ABBR = {
-    "English (US)": "US",
-    "Ukrainian": "UA",
+    "English (US)": "us",
+    "Ukrainian": "ua",
 }
 
 
@@ -46,9 +46,7 @@ def stream(event, *extra):
     """Yield parsed JSON objects from `mmsg watch <event>`, restarting on death."""
     cmd = ["mmsg", "watch", event, *extra]
     while True:
-        proc = subprocess.Popen(
-            cmd, stdout=subprocess.PIPE, text=True, bufsize=1
-        )
+        proc = subprocess.Popen(cmd, stdout=subprocess.PIPE, text=True, bufsize=1)
         try:
             for line in proc.stdout:
                 line = line.strip()
@@ -91,9 +89,7 @@ def run_tags(monitor):
             else:
                 color = COLOR_EMPTY
             weight = "bold" if t.get("is_active") else "normal"
-            parts.append(
-                f'<span foreground="{color}" weight="{weight}">{idx}</span>'
-            )
+            parts.append(f'<span foreground="{color}" weight="{weight}">{idx}</span>')
         out = " ".join(parts)
         if out != last:
             emit(out)
@@ -149,7 +145,8 @@ def run_eww_tags(monitor):
             )
         out = (
             '(box :class "ws" :orientation "h" :space-evenly false :spacing 4 '
-            + " ".join(btns) + ")"
+            + " ".join(btns)
+            + ")"
         )
         if out != last:
             emit(out)
@@ -233,8 +230,12 @@ def run_active_class(monitor, klass="active"):
     # wait for Ironbar's IPC so the very first (current) state applies
     for _ in range(60):
         try:
-            if subprocess.run(["ironbar", "ping"], capture_output=True,
-                              timeout=2).returncode == 0:
+            if (
+                subprocess.run(
+                    ["ironbar", "ping"], capture_output=True, timeout=2
+                ).returncode
+                == 0
+            ):
                 break
         except (subprocess.SubprocessError, OSError):
             pass
@@ -286,33 +287,44 @@ def main():
     sub = p.add_subparsers(dest="mode", required=True)
 
     pt = sub.add_parser("tags", help="all tag indicators (Pango markup)")
-    pt.add_argument("--monitor", default=None,
-                    help="monitor name (default: first reported)")
+    pt.add_argument(
+        "--monitor", default=None, help="monitor name (default: first reported)"
+    )
 
-    pe = sub.add_parser("eww-tags",
-                        help="eww literal of clickable workspace buttons")
-    pe.add_argument("--monitor", default=None,
-                    help="monitor name (default: first reported)")
+    pe = sub.add_parser("eww-tags", help="eww literal of clickable workspace buttons")
+    pe.add_argument(
+        "--monitor", default=None, help="monitor name (default: first reported)"
+    )
 
     pg = sub.add_parser("tag", help="one tag's indicator (for a single button)")
     pg.add_argument("index", type=int, help="tag index (1-based)")
-    pg.add_argument("--monitor", default=None,
-                    help="monitor name (default: first reported)")
+    pg.add_argument(
+        "--monitor", default=None, help="monitor name (default: first reported)"
+    )
 
-    pa = sub.add_parser("is-active",
-                        help="one-shot: exit 0 if tag occupied/active (for show_if)")
+    pa = sub.add_parser(
+        "is-active", help="one-shot: exit 0 if tag occupied/active (for show_if)"
+    )
     pa.add_argument("index", type=int, help="tag index (1-based)")
-    pa.add_argument("--monitor", default=None,
-                    help="monitor name (default: first reported)")
+    pa.add_argument(
+        "--monitor", default=None, help="monitor name (default: first reported)"
+    )
 
-    pac = sub.add_parser("active-class",
-                         help="move an 'active' CSS class onto the focused tag")
-    pac.add_argument("--monitor", default=None,
-                     help="monitor name (default: first reported)")
+    pac = sub.add_parser(
+        "active-class", help="move an 'active' CSS class onto the focused tag"
+    )
+    pac.add_argument(
+        "--monitor", default=None, help="monitor name (default: first reported)"
+    )
 
     pw = sub.add_parser("title", help="focused window title")
-    pw.add_argument("--max", type=int, default=80, dest="max_len",
-                    help="truncate title to N chars (0 = no limit)")
+    pw.add_argument(
+        "--max",
+        type=int,
+        default=80,
+        dest="max_len",
+        help="truncate title to N chars (0 = no limit)",
+    )
 
     sub.add_parser("layout", help="keyboard layout, abbreviated")
 
