@@ -10,4 +10,6 @@ export MANPAGER="nvim +Man!"
 export GOPATH="$HOME/go"
 export XDG_DATA_HOME="$HOME/.local/share"
 export AGENTSDOTS_ROOT="/mnt/kodak/github/agentsdots"
+export ZK_NOTEBOOK_DIR="/mnt/kodak/zettelnotes"
+export ZETTEL_DIR="/mnt/kodak/zettelnotes"
 export BAT_THEME="tokyonight_night"   # used by bat, the cat= alias, and fzf previews
