@@ -15,7 +15,6 @@ plugins=(
   zsh-syntax-highlighting
   zsh-autosuggestions
   zsh-vi-mode
-  cd-ls
   zsh-git-fzf
   alias-tips
 )

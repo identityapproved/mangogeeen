@@ -12,7 +12,16 @@ if command -v eza >/dev/null 2>&1; then
   # Flags every listing gets. --icons=auto and --color=auto draw glyphs/colour
   # only on a tty, so piping stays parseable. --no-quotes drops the quoting eza
   # adds around names with spaces.
-  _eza='eza --group-directories-first --icons=auto --color=auto --no-quotes'
+  #
+  # The array stays defined: the aliases below bake it in at definition time,
+  # but the functions at the bottom read it when they run.
+  typeset -ga _eza_flags=(
+    --group-directories-first
+    --icons=auto
+    --color=auto
+    --no-quotes
+  )
+  _eza="eza ${_eza_flags}"
 
   # Long form: --smart-group hides the group column when it matches the owner,
   # --git annotates tracked files, relative times read faster than timestamps.
@@ -68,13 +77,16 @@ if command -v eza >/dev/null 2>&1; then
   ltn() {
     local lvl=${1:-2}
     shift 2>/dev/null
-    eza --group-directories-first --icons=auto --color=auto --no-quotes \
-      --tree --level="$lvl" "$@"
+    eza $_eza_flags --tree --level="$lvl" "$@"
   }
 
-  # OMZ's cd-ls plugin runs `eval ${CD_LS_COMMAND:-ls}` on every chpwd; point it
-  # at eza directly instead of relying on the alias surviving the eval.
-  CD_LS_COMMAND="$_eza"
+  # List after every cd. This is zsh's own chpwd hook — it replaces the cd-ls
+  # plugin, which did the same thing through `eval ${CD_LS_COMMAND:-ls}`.
+  # add-zsh-hook refuses duplicates, so re-sourcing this file is safe.
+  # The explicit "." matters: no-arg eza lists nothing in a non-tty shell.
+  _eza_chpwd() { eza $_eza_flags . }
+  autoload -Uz add-zsh-hook
+  add-zsh-hook chpwd _eza_chpwd
 
   unset _eza _eza_l
 fi
