@@ -13,4 +13,5 @@ clipse/tmp_files/
 # the item DB live outside the repo by design — ~/.config/liferea is a real
 # directory, not a symlink to this one — so nothing of Liferea's needs ignoring
 # here beyond Python bytecode.
+__pycache__/
 liferea/plugins/__pycache__/
